@@ -207,7 +207,7 @@ export const ContractSelection = (props: ContractSelectionProps) => {
           <article className="mt-2 pb-0">
             <button id="publishOnIpfs" className="btn btn-secondary btn-block" onClick={() => { handlePublishToStorage('ipfs') }}>
               <CustomTooltip
-                placement="right-start"
+                placement="right"
                 tooltipId="publishOnIpfsTooltip"
                 tooltipClasses="text-nowrap"
                 tooltipText={`${intl.formatMessage({ id: 'solidity.publishOn' })} Ipfs`}
@@ -220,7 +220,7 @@ export const ContractSelection = (props: ContractSelectionProps) => {
             </button>
             <button id="publishOnSwarm" className="btn btn-secondary btn-block" onClick={() => { handlePublishToStorage('swarm') }}>
               <CustomTooltip
-                placement="right-start"
+                placement="right"
                 tooltipId="publishOnSwarmTooltip"
                 tooltipClasses="text-nowrap"
                 tooltipText={`${intl.formatMessage({ id: 'solidity.publishOn' })} Swarm`}
@@ -233,7 +233,7 @@ export const ContractSelection = (props: ContractSelectionProps) => {
             </button>
             <button data-id="compilation-details" className="btn btn-secondary btn-block" onClick={() => { details() }}>
               <CustomTooltip
-                placement="right-start"
+                placement="right"
                 tooltipId="CompilationDetailsTooltip"
                 tooltipClasses="text-nowrap"
                 tooltipText="Display Contract Details"
