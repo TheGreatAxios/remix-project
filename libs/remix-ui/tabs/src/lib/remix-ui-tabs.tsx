@@ -26,20 +26,17 @@ interface ITabsState {
   selectedIndex: number,
   fileDecorations: fileDecoration[],
   currentExt: string
-  fileName: string
 }
 interface ITabsAction {
   type: string,
   payload: any,
   ext?: string,
-  fileName?: string
 }
 
 const initialTabsState: ITabsState = {
   selectedIndex: -1,
   fileDecorations: [],
-  currentExt: '',
-  fileName: ''
+  currentExt: ''
 }
 
 const tabsReducer = (state: ITabsState, action: ITabsAction) => {
@@ -48,7 +45,6 @@ const tabsReducer = (state: ITabsState, action: ITabsAction) => {
       return {
         ...state,
         currentExt: action.ext,
-        fileName: action.fileName,
         selectedIndex: action.payload,
       }
     case 'SET_FILE_DECORATIONS':
@@ -112,7 +108,7 @@ export const TabsUI = (props: TabsUIProps) => {
   const activateTab = (name: string) => {
     const index = tabs.current.findIndex((tab) => tab.name === name)
     currentIndexRef.current = index
-    dispatch({ type: 'SELECT_INDEX', payload: index, ext: getExt(name), fileName: name})
+    dispatch({ type: 'SELECT_INDEX', payload: index, ext: getExt(name)})
   }
 
   const setFileDecorations = (fileStates: fileDecoration[]) => {
@@ -144,6 +140,7 @@ export const TabsUI = (props: TabsUIProps) => {
     if (ext) return ext[0].toLowerCase()
     else return ''
   }
+
   return (
     <div className="remix-ui-tabs d-flex justify-content-between border-0 header nav-tabs" data-id="tabs-component">
       <div className="d-flex flex-row" style={{ maxWidth: 'fit-content', width: '97%' }}>
@@ -158,13 +155,10 @@ export const TabsUI = (props: TabsUIProps) => {
               if (tabsState.currentExt === 'js' || tabsState.currentExt === 'ts') {
                 await props.plugin.call('scriptRunner', 'execute', content, path)
                 _paq.push(['trackEvent', 'editor', 'clickRunFromEditor', tabsState.currentExt])
-              } else if (path.endsWith('.script.sol')) {
-                await props.plugin.call('solidity-script', 'execute', path)
-                _paq.push(['trackEvent', 'editor', 'clickRunFromEditor', tabsState.currentExt])
               } else if (tabsState.currentExt === 'sol' || tabsState.currentExt === 'yul') {
                 await props.plugin.call('solidity', 'compile', path)
                 _paq.push(['trackEvent', 'editor', 'clickRunFromEditor', tabsState.currentExt])
-              } 
+              }
             }}
           >
             <CustomTooltip
@@ -172,7 +166,6 @@ export const TabsUI = (props: TabsUIProps) => {
               tooltipId="overlay-tooltip-run-script"
               tooltipText={<span>
                   {(tabsState.currentExt === 'js' || tabsState.currentExt === 'ts') ? "Run script (CTRL + SHIFT + S)" :
-                   (tabsState.fileName && tabsState.fileName.endsWith('.script.sol')) ? "Run Solidity code as a script (free function). This will run the function 'run'" :
                     tabsState.currentExt === 'sol' || tabsState.currentExt === 'yul'? "Compile CTRL + S" : "Select .sol or .yul file to compile or a .ts or .js file and run it"}
                 </span>}
             >
